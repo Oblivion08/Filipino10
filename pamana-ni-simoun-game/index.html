@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pamana ni Simoun: Mini-Game Quest</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <audio id="bgMusic" loop src="assets/elfili.mp3"></audio>
+  <audio id="clickSound" src="assets/click.mp3"></audio>
+  <audio id="correctSound" src="assets/correct.mp3"></audio>
+  <audio id="wrongSound" src="assets/wrong.mp3"></audio>
+  <audio id="victorySound" src="assets/victory.mp3"></audio>
+  <audio id="unlockSound" src="assets/unlock.mp3"></audio>
+
+  <div id="toast" class="toast hidden">🏆 Achievement Unlocked!</div>
+
+  <section id="gate" class="screen active">
+    <div class="gate-card">
+      <h1>Pamana ni Simoun</h1>
+      <h2>Mini-Game Quest</h2>
+      <p>Piliin kung paano papasok sa laro.</p>
+      <div class="gate-buttons">
+        <button onclick="enterStudent()">Student Mode</button>
+        <button class="ghost" onclick="showTeacherLogin()">Teacher Mode</button>
+      </div>
+
+      <div id="teacherLogin" class="teacher-login hidden">
+        <h3>Teacher Access</h3>
+        <input id="teacherPassword" type="password" placeholder="Enter teacher password" />
+        <button onclick="checkTeacherPassword()">Login</button>
+        <p id="passwordMsg"></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="characterSelect" class="screen">
+    <div class="select-wrap">
+      <h1>Piliin ang Iyong Karakter</h1>
+      <p>Ang iyong karakter ang magiging manlalakbay sa Pamana ni Simoun.</p>
+      <div class="character-grid" id="characterGrid"></div>
+    </div>
+  </section>
+
+  <section id="home" class="screen">
+    <div class="main-hub">
+      <div class="hub-top">
+        <div class="hub-title">
+          <h1>PAMANA NI SIMOUN</h1>
+          <h2>Mini-Game Quest</h2>
+        </div>
+        <div class="hub-controls">
+          <button onclick="toggleMusic()" title="Music">🎵<br><small id="musicText">MUSIC</small></button>
+          <button onclick="openPanel('achievements')" title="Awards">🏆<br><small>AWARDS</small></button>
+        </div>
+      </div>
+
+      <div class="player-strip">
+        <div class="player-avatar" id="playerAvatar">👨‍🎓</div>
+        <div>
+          <h3 id="playerName">Player</h3>
+          <p id="playerRole">Scholar</p>
+          <div class="xp-bar"><span id="xpFill"></span></div>
+          <small>Lv. <span id="playerLevel">1</span> | XP <span id="playerXP">0</span>/100</small>
+        </div>
+        <div class="stats">
+          <div>⭐ <b id="doneCount">0</b>/<span id="totalCount">0</span><br><small>Topics</small></div>
+          <div>🏆 <b id="awardCount">0</b><br><small>Awards</small></div>
+        </div>
+      </div>
+
+      <div class="story-hub">
+        <div class="story-avatar" id="storyAvatar">🧔‍♂️</div>
+        <div class="story-text">
+          <h3 id="storySpeaker">Simoun</h3>
+          <p id="storyLine">Isang lumang relikya ang muling nagising. Piliin ang iyong landas at tuklasin ang pamana ng katotohanan.</p>
+          <button onclick="nextStory()">Magpatuloy</button>
+        </div>
+      </div>
+
+      <div class="term-cards">
+        <div class="term-card red" onclick="openTerm('term1')">
+          <h3>TERM 1</h3>
+          <h2>EL FILIBUSTERISMO</h2>
+          <p>Kaligiran, GOMBURZA, mga tauhan, kabanata, at tekstong biswal.</p>
+          <button>PASUKIN</button>
+        </div>
+
+        <div class="term-card blue" onclick="openTerm('term2')">
+          <h3>TERM 2</h3>
+          <h2>MAKABAGONG AKDA</h2>
+          <p>Tula, tuluyan, pananaliksik, tekstong biswal, at sarbey.</p>
+          <button>PASUKIN</button>
+        </div>
+
+        <div class="term-card green" onclick="openTerm('term3')">
+          <h3>TERM 3</h3>
+          <h2>PANANALIKSIK</h2>
+          <p>Sanggunian, abstrak, framework, at poster presentation.</p>
+          <button>PASUKIN</button>
+        </div>
+      </div>
+
+      <div class="bottom-menu">
+        <button onclick="openPanel('characters')">👥<br>CHARACTERS</button>
+        <button onclick="openPanel('collection')">📘<br>COLLECTION</button>
+        <button onclick="openPanel('journal')">🪶<br>JOURNAL</button>
+        <button onclick="openPanel('leaderboard')">🏅<br>LEADERBOARD</button>
+        <button onclick="openPanel('settings')">⚙️<br>SETTINGS</button>
+      </div>
+
+      <div class="tagline">Matuto. Maglaro. Mag-iwan ng Pamana.</div>
+
+      <div id="hubPanel" class="hub-panel hidden">
+        <button class="close-btn" onclick="closePanel()">×</button>
+        <h2 id="panelTitle">Panel</h2>
+        <div id="panelContent"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="lessonMenu" class="screen">
+    <div class="page-wrap">
+      <button class="back-btn" onclick="showScreen('home')">← Main Hub</button>
+      <h1 id="termTitle">Term</h1>
+      <p id="termSubtitle">Pumili ng lesson mini-game.</p>
+      <div id="lessonGrid" class="lesson-grid"></div>
+    </div>
+  </section>
+
+  <section id="gameScreen" class="screen">
+    <div class="page-wrap">
+      <button class="back-btn" onclick="showCurrentTerm()">← Lessons</button>
+      <div class="npc-box">
+        <div id="gameNpcAvatar" class="npc-avatar">🧔‍♂️</div>
+        <div>
+          <h3 id="gameNpcName">Simoun</h3>
+          <p id="gameNpcLine">Handa ka na ba?</p>
+        </div>
+      </div>
+      <div class="game-card">
+        <h1 id="gameTitle">Lesson</h1>
+        <p id="gameIntro"></p>
+        <div id="gameArea"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="resultScreen" class="screen">
+    <div class="result-card">
+      <h1 id="resultTitle">Tapos na!</h1>
+      <p id="resultText"></p>
+      <button onclick="showCurrentTerm()">Bumalik sa Lessons</button>
+      <button onclick="showScreen('home')">Main Hub</button>
+    </div>
+  </section>
+
+  <section id="teacherDashboard" class="screen">
+    <div class="page-wrap">
+      <button class="back-btn" onclick="showScreen('gate')">← Exit Teacher Mode</button>
+      <h1>Teacher Dashboard</h1>
+      <p>Password protected tools.</p>
+      <div class="teacher-actions">
+        <button onclick="unlockAll()">Unlock All Lessons</button>
+        <button onclick="resetProgress()">Reset Student Progress</button>
+        <button onclick="exportScores()">Export/View Scores</button>
+        <button onclick="showScreen('home')">Preview Game Hub</button>
+      </div>
+      <div id="teacherOutput" class="teacher-output"></div>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
