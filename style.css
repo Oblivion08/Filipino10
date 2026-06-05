@@ -99,3 +99,7 @@ input,textarea{width:100%;padding:13px;border-radius:12px;border:1px solid var(-
   outline: 3px dashed #f6c85f;
   background: rgba(246,200,95,.18);
 }
+.selected-drag {
+  outline: 4px solid #f6c85f;
+  background: rgba(246, 200, 95, .25);
+}

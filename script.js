@@ -1,26 +1,4 @@
-function unlockLessonWithPassword(nextLessonId){
-
-    const password = prompt(
-        "Ilagay ang Teacher Password para ma-unlock ang susunod na lesson:"
-    );
-
-    if(password === TEACHER_PASSWORD){
-
-        if(!gameState.unlockedLessons.includes(nextLessonId)){
-            gameState.unlockedLessons.push(nextLessonId);
-        }
-
-        save();
-
-        alert("Lesson Unlocked!");
-        renderLessons();
-
-    }else{
-
-        alert("Maling password.");
-
-    }
-}const TEACHER_PASSWORD = "Binibini2026";
+const TEACHER_PASSWORD = "Binibini2026";
 
 const gameState = {
     unlockedLessons: ["kaligiran"],
@@ -46,40 +24,23 @@ const npcs = {
 
 const topics = [
 {
-    id:"kaligiran",
-    term:"term1",
-    icon:"📜",
-    npc:"simoun",
-    title:"Kaligirang Pangkasaysayan",
-    game:"Timeline Builder",
-    type:"timeline",
-    intro:"Ayusin ang mga pangyayari ayon sa tamang daloy ng kasaysayan.",
-
-    items:[
-        "Pagbitay sa GOMBURZA",
-        "Pagkakasulat ng Noli Me Tangere",
-        "Pagkakasulat ng El Filibusterismo",
-        "Paglalahad ng suliraning panlipunan sa nobela",
-        "Paglaganap ng diwang makabayan"
-    ]
-},
-{
-  id:"gomburza",
+  id:"kaligiran",
   term:"term1",
-  icon:"⚔️",
+  icon:"📜",
   npc:"simoun",
-  title:"GOMBURZA",
-  game:"Memory Match",
-  type:"match",
-  intro:"I-match ang pangalan sa tamang paglalarawan.",
-    pairs:[
-  ["Gomez","Mariano Gomez"],
-  ["Burgos","Jose Burgos"],
-  ["Zamora","Jacinto Zamora"],
-  ["GOMBURZA","Pinagsamang pangalan ng tatlong pari"],
-  ["1872","Taon ng pagbitay"]
+  title:"Kaligirang Pangkasaysayan",
+  game:"Timeline Builder",
+  type:"timeline",
+  intro:"Ayusin ang mga pangyayari ayon sa tamang daloy ng kasaysayan.",
+  items:[
+    "Pagbitay sa GOMBURZA",
+    "Pagkakasulat ng Noli Me Tangere",
+    "Pagkakasulat ng El Filibusterismo",
+    "Paglalantad ng suliraning panlipunan sa nobela",
+    "Paglaganap ng diwang makabayan"
   ]
 },
+{id:"gomburza",term:"term1",icon:"⚔️",npc:"simoun",title:"GOMBURZA",game:"Memory Match",type:"match",intro:"I-match ang pangalan sa tamang paglalarawan.",pairs:[["Gomez","Isa sa tatlong paring martir"],["Burgos","Paring martir na simbolo ng katarungan"],["Zamora","Kabilang sa GOMBURZA"],["GOMBURZA","Simbolo ng pang-aabuso sa panahon ng Kastila"],["1872","Taon ng pagbitay sa tatlong pari"]]},
 {id:"tauhan",term:"term1",icon:"👥",npc:"basilio",title:"Mga Tauhan",game:"Who Am I?",type:"whoami",intro:"Basahin ang clue at hulaan ang tauhan.",questions:[{clue:"Ako ang mayamang mag-aalahas na dating si Crisostomo Ibarra.",answer:"Simoun"},{clue:"Ako ay mag-aaral ng medisina at dating sakristan.",answer:"Basilio"},{clue:"Ako ay makatang kasintahan ni Paulita Gomez.",answer:"Isagani"},{clue:"Ako ay ama ni Juli at naging biktima ng pang-aapi.",answer:"Kabesang Tales"},{clue:"Ako ang kasintahan ni Basilio.",answer:"Juli"}]},
 {id:"noli",term:"term1",icon:"🔁",npc:"basilio",title:"Pagbabalik-tanaw sa Noli",game:"Recall Quiz",type:"quiz",intro:"Iugnay ang mahahalagang pangyayari sa Noli sa El Fili.",questions:[{q:"Sino ang dating katauhan ni Simoun?",choices:["Crisostomo Ibarra","Elias","Basilio"],answer:0},{q:"Bakit mahalaga ang Noli sa El Fili?",choices:["Nagbibigay ito ng pinagmulan ng mga pangyayari","Wala itong kaugnayan","Ito ay awit"],answer:0},{q:"Anong damdamin ang nag-udyok kay Simoun?",choices:["Paghihiganti","Katuwaan","Paglalakbay"],answer:0},{q:"Sino ang dating bata na nakaligtas mula sa trahedya?",choices:["Basilio","Padre Salvi","Ben Zayb"],answer:0},{q:"Ano ang mahalagang koneksyon ng dalawang nobela?",choices:["Pagsusuri sa lipunang kolonyal","Paglalaro ng tauhan","Paglalakbay sa dagat lamang"],answer:0}]},
 {id:"bapor",term:"term1",icon:"🚢",npc:"simoun",title:"Bapor Tabo",game:"Maze Choice",type:"maze",intro:"Piliin ang tamang daan palabas ng Bapor Tabo.",questions:[{q:"Ano ang sinisimbolo ng Bapor Tabo?",choices:["Mabagal na sistema","Mabilis na progreso","Masayang pista"],answer:0},{q:"Ano ang ipinapakita ng mga pasahero?",choices:["Iba’t ibang antas ng lipunan","Mga hayop","Mga bata lamang"],answer:0},{q:"Bakit mahalagang simbolo ang barko?",choices:["Larawan ito ng lipunang mabagal umunlad","Pang-aliw lang ito","Walang kahulugan"],answer:0},{q:"Anong uri ng tekstong biswal ang maaaring suriin dito?",choices:["Imahen at espasyo","Tugma","Sukat"],answer:0},{q:"Ano ang kailangan sa pagsusuri ng simbolo?",choices:["Kritikal na pag-unawa","Panghuhula","Pagkopya"],answer:0}]},
@@ -117,7 +78,7 @@ let scores = JSON.parse(localStorage.getItem("ps_scores")) || [];
 let awards = JSON.parse(localStorage.getItem("ps_awards")) || [];
 
 const savedState = JSON.parse(localStorage.getItem("ps_gameState"));
-if (savedState) {
+if(savedState){
   gameState.unlockedLessons = savedState.unlockedLessons || ["kaligiran"];
   gameState.unlockedTerms = savedState.unlockedTerms || ["term1"];
 }
@@ -139,6 +100,7 @@ function showScreen(id){document.querySelectorAll(".screen").forEach(s=>s.classL
 function enterStudent(){
   playSound("clickSound");
   player = JSON.parse(localStorage.getItem("ps_player")) || null;
+
   if(player){
     showScreen("home");
   }else{
@@ -156,82 +118,106 @@ function termName(t){return t==="term1"?"TERM 1 — El Filibusterismo":t==="term
 function openTerm(term){currentTerm=term; renderLessons(); showScreen("lessonMenu")}
 function showCurrentTerm(){renderLessons(); showScreen("lessonMenu")}
 function isUnlocked(topicId){
-  if(localStorage.getItem("ps_unlockAll")==="yes"){
+  if(localStorage.getItem("ps_unlockAll") === "yes"){
     return true;
   }
+
   return gameState.unlockedLessons.includes(topicId);
 }
 function renderLessons(){
+  const list = topics.filter(t => t.term === currentTerm);
 
-    const list = topics.filter(t => t.term === currentTerm);
+  $("termTitle").textContent = termName(currentTerm);
+  $("termSubtitle").textContent =
+    "Pumili ng lesson. Kailangan ng teacher password para buksan ang locked mission.";
 
-    $("lessonGrid").innerHTML = list.map((t) => {
+  $("lessonGrid").innerHTML = list.map((t) => {
+    const unlocked =
+      gameState.unlockedLessons.includes(t.id) ||
+      localStorage.getItem("ps_unlockAll") === "yes";
 
-        const unlocked =
-            gameState.unlockedLessons.includes(t.id) ||
-            localStorage.getItem("ps_unlockAll") === "yes";
+    return `
+      <div class="lesson-card ${unlocked ? "" : "locked"}">
+        <small>${t.game}</small>
+        <h3>${t.icon} ${t.title}</h3>
+        <p>${t.intro || ""}</p>
 
-        return `
-            <div class="lesson-card ${unlocked ? "" : "locked"}">
-                <h3>${t.icon} ${t.title}</h3>
-
-                ${
-                    unlocked
-                    ? `<button onclick="startTopic('${t.id}')">Laruin</button>`
-                    : `<button onclick="requestUnlock('${t.id}')">🔒 Locked</button>`
-                }
-            </div>
-        `;
-
-    }).join("");
-
-} // ← IMPORTANT! DITO NAGSASARA ANG renderLessons()
-
+        ${
+          unlocked
+          ? `<button onclick="startTopic('${t.id}')">Laruin</button>`
+          : `<button onclick="requestUnlock('${t.id}')">🔒 Locked</button>`
+        }
+      </div>
+    `;
+  }).join("");
+}
 
 function requestUnlock(topicId){
+  const password = prompt("Teacher Password para ma-unlock ang mission:");
 
-    const password = prompt(
-        "Teacher Password para ma-unlock ang mission:"
-    );
-
-    if(password === TEACHER_PASSWORD){
-
-        if(!gameState.unlockedLessons.includes(topicId)){
-            gameState.unlockedLessons.push(topicId);
-        }
-
-        save();
-
-        alert("Mission unlocked!");
-
-        renderLessons();
-
-    }else{
-
-        alert("Maling password.");
-
+  if(password === TEACHER_PASSWORD){
+    if(!gameState.unlockedLessons.includes(topicId)){
+      gameState.unlockedLessons.push(topicId);
     }
+
+    save();
+    alert("Mission unlocked!");
+    renderLessons();
+  }else{
+    alert("Maling password. Locked pa rin ang mission.");
+  }
 }
-function startTopic(id){currentTopic=topics.find(t=>t.id===id); qIndex=0; score=0; selectedPair=[]; tempOrder=[]; const npc=npcs[currentTopic.npc]||npcs.simoun; $("gameNpcAvatar").textContent=npc.avatar; $("gameNpcName").textContent=npc.name; $("gameNpcLine").textContent=npc.line; $("gameTitle").textContent=currentTopic.icon+" "+currentTopic.title; $("gameIntro").textContent=currentTopic.intro; showScreen("gameScreen"); renderGame()}
+function startTopic(id){
+  if(!gameState.unlockedLessons.includes(id) && localStorage.getItem("ps_unlockAll") !== "yes"){
+    requestUnlock(id);
+
+    if(!gameState.unlockedLessons.includes(id) && localStorage.getItem("ps_unlockAll") !== "yes"){
+      return;
+    }
+  }
+
+  currentTopic = topics.find(t => t.id === id);
+  if(!currentTopic){
+    alert("Hindi makita ang mission.");
+    return;
+  }
+
+  qIndex = 0;
+  score = 0;
+  selectedPair = [];
+  tempOrder = [];
+
+  const npc = npcs[currentTopic.npc] || npcs.simoun;
+
+  $("gameNpcAvatar").textContent = npc.avatar;
+  $("gameNpcName").textContent = npc.name;
+  $("gameNpcLine").textContent = npc.line;
+  $("gameTitle").textContent = currentTopic.icon + " " + currentTopic.title;
+  $("gameIntro").textContent = currentTopic.intro;
+
+  showScreen("gameScreen");
+  renderGame();
+}
 function renderGame(){ if(["quiz","maze","dialogue","poster"].includes(currentTopic.type)) renderQuestionGame(); else if(currentTopic.type==="timeline") renderOrderGame(); else if(currentTopic.type==="match") renderMatchGame(); else if(currentTopic.type==="whoami") renderWhoAmI(); else if(currentTopic.type==="jumbled") renderJumbled(); }
 function getQuestions(){ if(currentTopic.type==="dialogue") return currentTopic.questions.map(q=>({q:`"${q.line}" Sino ang pinakaangkop?`,choices:q.choices,answer:q.answer})); return currentTopic.questions }
 function renderQuestionGame(){const qs=getQuestions(), q=qs[qIndex]; $("gameArea").innerHTML=`<div class="game-box"><p><b>Tanong ${qIndex+1}/${qs.length}</b></p><h2>${q.q}</h2>${q.choices.map((c,i)=>`<button class="choice" onclick="answerQuestion(${i})">${c}</button>`).join("")}<div id="feedback" class="feedback"></div></div>`}
 function answerQuestion(i){const qs=getQuestions(), q=qs[qIndex], fb=$("feedback"); if(i===q.answer){score++; playSound("correctSound"); fb.innerHTML="<span style='color:#82e6a3'>Tama!</span>"}else{playSound("wrongSound"); fb.innerHTML=`<span style='color:#ff7676'>Mali. Sagot: ${q.choices[q.answer]}</span>`} setTimeout(()=>{qIndex++; if(qIndex>=qs.length) finishGame(score,qs.length); else renderQuestionGame()},850)}
-let draggedIndex = null;
+let selectedOrderIndex = null;
 
 function renderOrderGame(){
   tempOrder = shuffle([...currentTopic.items]);
+  selectedOrderIndex = null;
   renderOrderCurrent();
 }
 
 function renderOrderCurrent(){
   $("gameArea").innerHTML = `
     <div class="game-box">
-      <p>I-drag ang mga kahon ayon sa tamang pagkakasunod-sunod.</p>
+      <p>I-click/tap ang kahon na ililipat, tapos i-click/tap ang target position.</p>
 
-      <div id="dragList" class="drag-list">
+      <div class="drag-list">
         ${tempOrder.map((item, i) => `
-          <div class="drag-item" draggable="true" data-index="${i}">
+          <div class="drag-item ${selectedOrderIndex === i ? "selected-drag" : ""}" onclick="tapMoveItem(${i})">
             <span class="drag-icon">☰</span>
             <span>${item}</span>
           </div>
@@ -242,61 +228,42 @@ function renderOrderCurrent(){
       <div id="feedback" class="feedback"></div>
     </div>
   `;
-
-  setupDragAndDrop();
 }
 
-function setupDragAndDrop(){
-  const items = document.querySelectorAll(".drag-item");
+function tapMoveItem(index){
+  if(selectedOrderIndex === null){
+    selectedOrderIndex = index;
+    renderOrderCurrent();
+    return;
+  }
 
-  items.forEach(item => {
-    item.addEventListener("dragstart", () => {
-      draggedIndex = Number(item.dataset.index);
-      item.classList.add("dragging");
-    });
+  if(selectedOrderIndex === index){
+    selectedOrderIndex = null;
+    renderOrderCurrent();
+    return;
+  }
 
-    item.addEventListener("dragend", () => {
-      item.classList.remove("dragging");
-    });
+  const movedItem = tempOrder.splice(selectedOrderIndex, 1)[0];
+  tempOrder.splice(index, 0, movedItem);
 
-    item.addEventListener("dragover", e => {
-      e.preventDefault();
-      item.classList.add("drag-over");
-    });
-
-    item.addEventListener("dragleave", () => {
-      item.classList.remove("drag-over");
-    });
-
-    item.addEventListener("drop", e => {
-      e.preventDefault();
-
-      const dropIndex = Number(item.dataset.index);
-
-      const movedItem = tempOrder.splice(draggedIndex, 1)[0];
-      tempOrder.splice(dropIndex, 0, movedItem);
-
-      renderOrderCurrent();
-    });
-  });
+  selectedOrderIndex = null;
+  renderOrderCurrent();
 }
 
 function checkOrder(){
-  const correct = currentTopic.items;
-
   const ok = tempOrder.every((item, index) => {
-    return item === correct[index];
+    return item === currentTopic.items[index];
   });
 
   if(ok){
     finishGame(1, 1);
   }else{
     $("feedback").innerHTML =
-      "<span style='color:#ff7676'>May mali pa sa ayos. I-drag ulit ang mga kahon.</span>";
-
+      "<span style='color:#ff7676'>May mali pa sa ayos. I-click/tap ulit ang mga kahon.</span>";
     playSound("wrongSound");
   }
 }
+
 function renderMatchGame(){const cards=[]; currentTopic.pairs.forEach((p,i)=>{cards.push({text:p[0],pair:i});cards.push({text:p[1],pair:i})}); window.matchCards=shuffle(cards); window.matched=[]; $("gameArea").innerHTML=`<div class="game-box"><p>Piliin ang dalawang magkapareha.</p><div class="pair-grid">${window.matchCards.map((c,i)=>`<button id="pair${i}" class="pair-card" onclick="selectMatch(${i})">${c.text}</button>`).join("")}</div><div id="feedback" class="feedback"></div></div>`}
 function selectMatch(i){if(window.matched.includes(i)||selectedPair.includes(i))return; selectedPair.push(i); $("pair"+i).classList.add("selected"); if(selectedPair.length===2){let [a,b]=selectedPair; if(window.matchCards[a].pair===window.matchCards[b].pair){window.matched.push(a,b); playSound("correctSound"); $("feedback").innerHTML="<span style='color:#82e6a3'>Match!</span>"; if(window.matched.length===window.matchCards.length)finishGame(1,1)}else{playSound("wrongSound"); setTimeout(()=>{$("pair"+a).classList.remove("selected");$("pair"+b).classList.remove("selected")},600)} selectedPair=[]}}
 function renderWhoAmI(){const q=currentTopic.questions[qIndex]; $("gameArea").innerHTML=`<div class="game-box"><p><b>Clue ${qIndex+1}/${currentTopic.questions.length}</b></p><h2>${q.clue}</h2><input id="whoInput" placeholder="I-type ang sagot"><button class="submit-btn" onclick="checkWho()">Sagot</button><div id="feedback" class="feedback"></div></div>`}
@@ -304,56 +271,56 @@ function checkWho(){const q=currentTopic.questions[qIndex]; const ans=$("whoInpu
 function renderJumbled(){const word=currentTopic.words[qIndex]; $("gameArea").innerHTML=`<div class="game-box"><p><b>Salita ${qIndex+1}/${currentTopic.words.length}</b></p><div class="word">${shuffle(word.split("")).join("")}</div><input id="jumbleInput" placeholder="Ayusin ang salita"><button class="submit-btn" onclick="checkJumbled()">Sagot</button><div id="feedback" class="feedback"></div></div>`}
 function checkJumbled(){const word=currentTopic.words[qIndex]; const ans=$("jumbleInput").value.trim().toUpperCase(); if(ans===word){score++;playSound("correctSound");$("feedback").innerHTML="<span style='color:#82e6a3'>Tama!</span>"}else{playSound("wrongSound");$("feedback").innerHTML=`<span style='color:#ff7676'>Sagot: ${word}</span>`} setTimeout(()=>{qIndex++; if(qIndex>=currentTopic.words.length)finishGame(score,currentTopic.words.length); else renderJumbled()},850)}
 function finishGame(points,total){
-progress[currentTopic.id]=true;
+  progress[currentTopic.id] = true;
 
-const currentIndex = topics.findIndex(t => t.id === currentTopic.id);
-
-if(currentIndex >= 0 && currentIndex < topics.length - 1){
-
+  const currentIndex = topics.findIndex(t => t.id === currentTopic.id);
+  if(currentIndex >= 0 && currentIndex < topics.length - 1){
     const nextTopic = topics[currentIndex + 1];
 
     if(nextTopic){
-        gameState.pendingUnlock = nextTopic.id;
+      gameState.pendingUnlock = nextTopic.id;
     }
- }
-scores.push({topic:currentTopic.title,game:currentTopic.game,score:points,total,date:new Date().toLocaleString()}); player.xp+=20; if(player.xp>=100){player.level++; player.xp-=100; unlockAward("Level Up Scholar")} if(Object.keys(progress).length>=5)unlockAward("Apprentice Scholar"); if(topics.filter(t=>t.term==="term1").every(t=>progress[t.id]))unlockAward("El Fili Master"); if(topics.filter(t=>t.term==="term2").every(t=>progress[t.id]))unlockAward("Literary Explorer"); if(topics.filter(t=>t.term==="term3").every(t=>progress[t.id]))unlockAward("Research Champion"); if(topics.every(t=>progress[t.id]))unlockAward("Tagapagmana ni Simoun"); save(); playSound("victorySound"); $("resultText").innerHTML=`<b>${currentTopic.title}</b><br>Laro: <b>${currentTopic.game}</b><br>Iskor: <b>${points}/${total}</b><br>+20 XP`; showScreen("resultScreen")}
+  }
+
+  scores.push({
+    topic: currentTopic.title,
+    game: currentTopic.game,
+    score: points,
+    total: total,
+    date: new Date().toLocaleString()
+  });
+
+  player.xp += 20;
+
+  if(player.xp >= 100){
+    player.level++;
+    player.xp -= 100;
+    unlockAward("Level Up Scholar");
+  }
+
+  if(Object.keys(progress).length >= 5) unlockAward("Apprentice Scholar");
+  if(topics.filter(t => t.term === "term1").every(t => progress[t.id])) unlockAward("El Fili Master");
+  if(topics.filter(t => t.term === "term2").every(t => progress[t.id])) unlockAward("Literary Explorer");
+  if(topics.filter(t => t.term === "term3").every(t => progress[t.id])) unlockAward("Research Champion");
+  if(topics.every(t => progress[t.id])) unlockAward("Tagapagmana ni Simoun");
+
+  save();
+  playSound("victorySound");
+
+  $("resultText").innerHTML =
+    `<b>${currentTopic.title}</b><br>
+    Laro: <b>${currentTopic.game}</b><br>
+    Iskor: <b>${points}/${total}</b><br><br>
+    ✅ Complete na ang mission!<br>
+    Tawagin ang guro para i-unlock ang susunod na lesson.`;
+
+  showScreen("resultScreen");
+}
 function unlockAward(a){if(!awards.includes(a)){awards.push(a); save(); const t=$("toast"); t.textContent="🏆 "+a; t.classList.remove("hidden"); playSound("unlockSound"); setTimeout(()=>t.classList.add("hidden"),2500)}}
 function openPanel(type){const panel=$("hubPanel"), title=$("panelTitle"), content=$("panelContent"); panel.classList.remove("hidden"); if(type==="characters"){title.textContent="👥 Characters"; content.innerHTML=characters.map(c=>`<p>${c.avatar} <b>${c.name}</b> — ${c.role}</p>`).join("")} if(type==="collection"){title.textContent="📘 Collection"; content.innerHTML=`<p>📜 GOMBURZA Scroll</p><p>🚢 Bapor Tabo Badge</p><p>🔍 Research Lens</p><p>🪶 Literary Feather</p><p>🎨 Poster Seal</p>`} if(type==="journal"){title.textContent="🪶 Journal"; content.innerHTML=`<p>Term 1: El Filibusterismo — ${topics.filter(t=>t.term==="term1"&&progress[t.id]).length}/${topics.filter(t=>t.term==="term1").length}</p><p>Term 2: Makabagong Akda — ${topics.filter(t=>t.term==="term2"&&progress[t.id]).length}/${topics.filter(t=>t.term==="term2").length}</p><p>Term 3: Pananaliksik — ${topics.filter(t=>t.term==="term3"&&progress[t.id]).length}/${topics.filter(t=>t.term==="term3").length}</p>`} if(type==="leaderboard"){title.textContent="🏅 Leaderboard"; const latest=scores.slice(-8).reverse(); content.innerHTML=latest.length?latest.map(s=>`<p>${s.score}/${s.total} — ${s.topic}</p>`).join(""):"<p>Wala pang score.</p>"} if(type==="achievements"){title.textContent="🏆 Awards"; content.innerHTML=awards.length?awards.map(a=>`<p>🏆 ${a}</p>`).join(""):"<p>Wala pa.</p>"} if(type==="settings"){title.textContent="⚙️ Settings"; content.innerHTML=`<button onclick="toggleMusic()">🎵 Toggle Music</button><button onclick="showScreen('gate')">🚪 Exit</button>`}}
 function closePanel(){$("hubPanel").classList.add("hidden")}
 function unlockAll(){localStorage.setItem("ps_unlockAll","yes"); updateTeacherOutput("All lessons are now unlocked.")}
-function resetProgress(){
-
-    const password = prompt("Teacher Password para mag-reset:");
-
-    if(password !== TEACHER_PASSWORD){
-        alert("Maling password. Hindi na-reset.");
-        return;
-    }
-
-    if(confirm("Sigurado ka bang i-reset ang lahat ng progress?")){
-
-        localStorage.removeItem("ps_progress");
-        localStorage.removeItem("ps_scores");
-        localStorage.removeItem("ps_awards");
-        localStorage.removeItem("ps_unlockAll");
-        localStorage.removeItem("ps_gameState");
-        localStorage.removeItem("ps_player");
-player = null;
-
-        progress = {};
-        scores = [];
-        awards = [];
-
-        gameState.unlockedLessons = ["kaligiran"];
-        gameState.unlockedTerms = ["term1"];
-
-        save();
-
-        alert("Reset complete. Lesson 1 lang ulit ang unlocked.");
-
-        showScreen("gate");
-    }
-}
+function resetProgress(){if(confirm("Reset all student progress?")){localStorage.removeItem("ps_progress");localStorage.removeItem("ps_scores");localStorage.removeItem("ps_awards");localStorage.removeItem("ps_unlockAll");progress={};scores=[];awards=[];save();updateTeacherOutput("Progress reset.")}}
 function exportScores(){updateTeacherOutput(JSON.stringify(scores,null,2) || "No scores yet.")}
 function updateTeacherOutput(txt){$("teacherOutput").textContent=txt}
 function shuffle(arr){return arr.sort(()=>Math.random()-.5)}
