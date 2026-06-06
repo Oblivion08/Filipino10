@@ -163,20 +163,30 @@ function requestUnlock(topicId){
     save();
     alert("Mission unlocked!");
     renderLessons();
+
   }else{
     alert("Maling password. Locked pa rin ang mission.");
   }
 }
-function startTopic(id){
-  if(!gameState.unlockedLessons.includes(id) && localStorage.getItem("ps_unlockAll") !== "yes"){
+
+  function startTopic(id){
+
+  if(
+    !gameState.unlockedLessons.includes(id) &&
+    localStorage.getItem("ps_unlockAll") !== "yes"
+  ){
     requestUnlock(id);
 
-    if(!gameState.unlockedLessons.includes(id) && localStorage.getItem("ps_unlockAll") !== "yes"){
+    if(
+      !gameState.unlockedLessons.includes(id) &&
+      localStorage.getItem("ps_unlockAll") !== "yes"
+    ){
       return;
     }
   }
 
   currentTopic = topics.find(t => t.id === id);
+
   if(!currentTopic){
     alert("Hindi makita ang mission.");
     return;
@@ -274,6 +284,7 @@ function finishGame(points,total){
   progress[currentTopic.id] = true;
 
   const currentIndex = topics.findIndex(t => t.id === currentTopic.id);
+
   if(currentIndex >= 0 && currentIndex < topics.length - 1){
     const nextTopic = topics[currentIndex + 1];
 
@@ -291,18 +302,6 @@ function finishGame(points,total){
   });
 
   player.xp += 20;
-
-  if(player.xp >= 100){
-    player.level++;
-    player.xp -= 100;
-    unlockAward("Level Up Scholar");
-  }
-
-  if(Object.keys(progress).length >= 5) unlockAward("Apprentice Scholar");
-  if(topics.filter(t => t.term === "term1").every(t => progress[t.id])) unlockAward("El Fili Master");
-  if(topics.filter(t => t.term === "term2").every(t => progress[t.id])) unlockAward("Literary Explorer");
-  if(topics.filter(t => t.term === "term3").every(t => progress[t.id])) unlockAward("Research Champion");
-  if(topics.every(t => progress[t.id])) unlockAward("Tagapagmana ni Simoun");
 
   save();
   playSound("victorySound");
@@ -332,3 +331,22 @@ function changeCharacter(){
   player = null;
   showScreen("characterSelect");
 }
+function hardReset(){
+  localStorage.removeItem("ps_unlockAll");
+  localStorage.removeItem("ps_gameState");
+  location.reload();
+}window.enterStudent = function(){
+  playSound("clickSound");
+
+  player = JSON.parse(localStorage.getItem("ps_player")) || null;
+
+  if(player){
+    showScreen("home");
+  }else{
+    showScreen("characterSelect");
+  }
+};
+
+window.showTeacherLogin = function(){
+  document.getElementById("teacherLogin").classList.remove("hidden");
+};

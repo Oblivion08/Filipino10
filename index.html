@@ -155,22 +155,30 @@
       <button onclick="showScreen('home')">Main Hub</button>
     </div>
   </section>
-
-  <section id="teacherDashboard" class="screen">
-    <div class="page-wrap">
-      <button class="back-btn" onclick="showScreen('gate')">← Exit Teacher Mode</button>
-      <h1>Teacher Dashboard</h1>
-      <p>Password protected tools.</p>
-      <div class="teacher-actions">
-        <button onclick="unlockAll()">Unlock All Lessons</button>
-        <button onclick="resetProgress()">Reset Student Progress</button>
-        <button onclick="exportScores()">Export/View Scores</button>
-        <button onclick="showScreen('home')">Preview Game Hub</button>
-      </div>
-      <div id="teacherOutput" class="teacher-output"></div>
     </div>
   </section>
+<section id="teacherDashboard" class="screen">
+  <div class="page-wrap">
 
+    <button class="back-btn" onclick="showScreen('gate')">
+      ← Exit Teacher Mode
+    </button>
+
+    <h1>Teacher Dashboard</h1>
+    <p>Password protected tools.</p>
+
+    <div class="teacher-actions">
+      <button onclick="unlockAll()">Unlock All Lessons</button>
+      <button onclick="resetProgress()">Reset Student Progress</button>
+      <button onclick="exportScores()">Export/View Scores</button>
+      <button onclick="showScreen('home')">Preview Game Hub</button>
+      <button onclick="hardReset()">🔄 Hard Reset</button>
+    </div>
+
+    <div id="teacherOutput" class="teacher-output"></div>
+
+  </div>
+</section>
   <script src="script.js"></script>
 </body>
 </html>
